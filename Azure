@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text to Speech with Azure</title>
+    <script src="microsoft.cognitiveservices.speech.sdk.bundle.js"></script>
+</head>
+<body>
+    <input type="text" id="textToSynthesize" />
+    <button onclick="synthesizeSpeech()">Speak</button>
+
+    <script>
+        function synthesizeSpeech() {
+            // 获取用户输入的文本
+            const text = document.getElementById("textToSynthesize").value;
+
+            // 定义必要的参数
+            const subscriptionKey = "YOUR_SUBSCRIPTION_KEY";
+            const serviceRegion = "YOUR_SERVICE_REGION";
+
+            // 创建语音配置对象
+            const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
+            speechConfig.speechSynthesisLanguage = "zh-CN";
+
+            // 创建音频配置对象
+            const audioConfig = SpeechSDK.AudioConfig.fromDefaultSpeakerOutput();
+
+            // 创建语音合成器对象
+            const synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig, audioConfig);
+
+            // 调用speakTextAsync方法将文本转换为语音并播放
+            synthesizer.speakTextAsync(
+                text,
+                result => {
+                    synthesizer.close();
+                },
+                error => {
+                    console.log(error);
+                    synthesizer.close();
+                });
+        }
+    </script>
+</body>
+</html>
+在上面的代码中，我们创建了一个文本输入框和一个按钮，并添加了一个onclick事件处理程序，当用户单击该按钮时，它会调用synthesizeSpeech函数。在synthesizeSpeech函数中，我们获取了用户输入的文本，并使用Azure文本转语音API将其转换为语音并播放。
+
+您需要将上面代码中的YOUR_SUBSCRIPTION_KEY和YOUR_SERVICE_REGION替换为您自己的Azure认知服务API密钥和终结点。
+
+希望这对您有所帮助！
